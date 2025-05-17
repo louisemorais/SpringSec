@@ -28,10 +28,11 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/organizations").hasAnyAuthority(
-                                "ADMIN", "USER"
-                        )
+                        .requestMatchers(HttpMethod.GET, "/organizations").hasAnyAuthority("ADMIN", "USER" )
                         .requestMatchers("/organizations", "/users").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/organizations/**", "/users/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/organizations/**", "/users/**").hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/organizations/**", "/users/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 );
         return http.build();
